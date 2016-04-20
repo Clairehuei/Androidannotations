@@ -2,6 +2,9 @@ package com.aa.androidannotations;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,8 +13,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aa.androidannotations.adapter.PersonAdapter;
 import com.aa.androidannotations.adapter.PersonListAdapter;
 import com.aa.androidannotations.api.MyRestClient;
+import com.aa.androidannotations.api.PersonFinder;
+import com.aa.androidannotations.api.impl.InMemoryPersonFinder;
 import com.aa.androidannotations.model.Err;
 import com.aa.androidannotations.model.Person;
 
@@ -32,21 +38,46 @@ import org.androidannotations.rest.spring.annotations.RestService;
 public class MainActivity extends AppCompatActivity {
 
     @ViewById
-    ListView personList;
+    RecyclerView mRecyclerView;
 
     @Bean
-    PersonListAdapter adapter;
+    PersonAdapter adapter;
+
+    @Bean(InMemoryPersonFinder.class)
+    PersonFinder personFinder;
 
     @AfterViews
-    void bindAdapter() {
-        System.out.println("===bindAdapter===");
-        personList.setAdapter(adapter);
+    public void initViews(){
+        mRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        adapter.setItems(personFinder.findAll());
+        mRecyclerView.setAdapter(adapter);
     }
 
-    @ItemClick
-    void personListItemClicked(Person person) {
-        Toast.makeText(this, person.firstName + " " + person.lastName, Toast.LENGTH_SHORT).show();
-    }
+//    @ItemClick
+//    void mRecyclerViewItemClicked(Person person) {
+//        Toast.makeText(this, person.firstName + " " + person.lastName, Toast.LENGTH_SHORT).show();
+//    }
+
+
+//==================================以下為list view========================================
+//    @ViewById
+//    ListView personList;
+//
+//    @Bean
+//    PersonListAdapter adapter;
+//
+//    @AfterViews
+//    void bindAdapter() {
+//        System.out.println("===bindAdapter===");
+//        personList.setAdapter(adapter);
+//    }
+//
+//    @ItemClick
+//    void personListItemClicked(Person person) {
+//        Toast.makeText(this, person.firstName + " " + person.lastName, Toast.LENGTH_SHORT).show();
+//    }
 
 
 //==================================以下為rest api test========================================

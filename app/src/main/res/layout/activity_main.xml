@@ -6,11 +6,22 @@
     >
 
 
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/mRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:scrollbars="vertical" />
+
+
+    <!--
     <ListView android:id="@+id/personList"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
     </ListView>
-
+-->
 
 
 
